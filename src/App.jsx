@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Heart, RefreshCcw, Plus, FileCode, Shield } from 'lucide-react';
 import { DEFAULT_GAMES } from './data/defaultGames.js';
+import { resolveUrl } from './utils/paths.js';
 import { Header } from './components/Header.jsx';
 import { HeroSpotlight } from './components/HeroSpotlight.jsx';
 import { GameCard } from './components/GameCard.jsx';
@@ -36,11 +37,15 @@ export default function App() {
     return localStorage.getItem(STORAGE_CLOAK_KEY) || 'default';
   });
 
-  // Load games from /games.json on mount
+  // Load games from games.json on mount
   useEffect(() => {
     async function loadGamesFromJson() {
       try {
-        const res = await fetch('/games.json');
+        const targetUrl = resolveUrl('games.json');
+        let res = await fetch(targetUrl);
+        if (!res.ok) {
+          res = await fetch('./games.json');
+        }
         if (res.ok) {
           const jsonGames = await res.json();
           // Merge with any custom games stored in localStorage

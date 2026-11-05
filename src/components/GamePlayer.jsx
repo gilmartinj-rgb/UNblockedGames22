@@ -12,6 +12,7 @@ import {
   Share2,
   Check
 } from 'lucide-react';
+import { resolveUrl, resolveIframeSrc } from '../utils/paths.js';
 
 export const GamePlayer = ({
   game,
@@ -27,21 +28,7 @@ export const GamePlayer = ({
   const [copied, setCopied] = useState(false);
   const frameContainerRef = useRef(null);
 
-  // Extract src from iframe string or fallback to direct URL
-  const getIframeSrc = (iframeString) => {
-    if (!iframeString) return '/games/snake.html';
-    const match = iframeString.match(/src=["'](.*?)["']/);
-    if (match && match[1]) {
-      return match[1];
-    }
-    // If user provided a raw URL
-    if (iframeString.startsWith('http') || iframeString.startsWith('/')) {
-      return iframeString;
-    }
-    return '/games/snake.html';
-  };
-
-  const iframeSrc = getIframeSrc(game.iframe);
+  const iframeSrc = resolveIframeSrc(game.iframe);
 
   const toggleFullscreen = () => {
     if (!frameContainerRef.current) return;
@@ -225,7 +212,7 @@ export const GamePlayer = ({
                 <div className="aspect-video bg-slate-950 rounded-lg overflow-hidden mb-2 relative">
                   {g.thumbnail ? (
                     <img
-                      src={g.thumbnail}
+                      src={resolveUrl(g.thumbnail)}
                       alt={g.title}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"

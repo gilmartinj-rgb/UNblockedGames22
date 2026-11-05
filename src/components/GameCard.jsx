@@ -1,5 +1,6 @@
 import React from 'react';
 import { Heart, Play, Star } from 'lucide-react';
+import { resolveUrl } from '../utils/paths.js';
 
 export const GameCard = ({
   game,
@@ -7,6 +8,8 @@ export const GameCard = ({
   isFavorite,
   onToggleFavorite
 }) => {
+  const thumbnailUrl = resolveUrl(game.thumbnail);
+
   return (
     <div
       onClick={() => onPlay(game)}
@@ -14,9 +17,9 @@ export const GameCard = ({
     >
       {/* Thumbnail */}
       <div className="relative aspect-video w-full bg-slate-950 overflow-hidden">
-        {game.thumbnail ? (
+        {thumbnailUrl ? (
           <img
-            src={game.thumbnail}
+            src={thumbnailUrl}
             alt={game.title}
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

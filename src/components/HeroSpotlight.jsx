@@ -1,5 +1,6 @@
 import React from 'react';
 import { Play, Sparkles, Star } from 'lucide-react';
+import { resolveUrl } from '../utils/paths.js';
 
 export const HeroSpotlight = ({
   featuredGame,
@@ -7,6 +8,8 @@ export const HeroSpotlight = ({
   totalGames
 }) => {
   if (!featuredGame) return null;
+
+  const thumbnailUrl = resolveUrl(featuredGame.thumbnail);
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-slate-900 border border-slate-800 p-6 md:p-8 mb-10 shadow-xl">
@@ -60,9 +63,9 @@ export const HeroSpotlight = ({
 
         <div className="lg:col-span-5 relative group cursor-pointer" onClick={() => onPlayGame(featuredGame)}>
           <div className="relative rounded-xl overflow-hidden border border-slate-700/80 shadow-2xl aspect-video bg-slate-950">
-            {featuredGame.thumbnail ? (
+            {thumbnailUrl ? (
               <img
-                src={featuredGame.thumbnail}
+                src={thumbnailUrl}
                 alt={featuredGame.title}
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
